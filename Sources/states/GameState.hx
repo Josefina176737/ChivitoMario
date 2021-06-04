@@ -131,7 +131,7 @@ class GameState extends State {
 
 		CollisionEngine.collide(chivito.collision,worldMap.collision);
 		if(CollisionEngine.overlap(chivito.collision, winZone)){
-			if(!(roomNbr == 2)){ //iria 3
+			if(!(roomNbr == 3)){
 				roomNbr++;
 				room = "screen_" + roomNbr + "_tmx";
 				tileSet = "tiles" + roomNbr;
