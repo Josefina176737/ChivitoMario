@@ -1,8 +1,25 @@
 package states;
 
+import com.loading.basicResources.ImageLoader;
+//import gameObjects.EnemySpawner;
+import paths.Complex;
+import paths.Bezier;
+import kha.math.FastVector2;
+import paths.Linear;
+import paths.PathWalker;
+import com.framework.utils.State;
+import com.collision.platformer.CollisionGroup;
+import gameObjects.GameData;
+import gameObjects.Cannon;
+import gameObjects.Goomba;
 import com.collision.platformer.CollisionBox;
 import helpers.Tray;
 import com.gEngine.display.extra.TileMapDisplay;
+import gameObjects.LevelPositions;
+import paths.Path;
+import paths.Linear;
+import paths.Complex;
+import paths.Bezier;
 import com.collision.platformer.Sides;
 import com.framework.utils.XboxJoystick;
 import com.framework.utils.VirtualGamepad;
@@ -19,10 +36,12 @@ import com.collision.platformer.Tilemap;
 import com.loading.basicResources.JoinAtlas;
 import com.loading.Resources;
 import com.framework.utils.State;
+import kha.math.FastVector2;
 
 class GameState extends State {
 	var worldMap:Tilemap;
 	var chivito:ChivitoBoy;
+	var goomba:Goomba; //ver si esto no hay que agruparlo
 	var simulationLayer:Layer;
 	var touchJoystick:VirtualGamepad;
 	var tray:helpers.Tray;
@@ -53,6 +72,14 @@ class GameState extends State {
 			new Sequence("idle", [10]),
 			new Sequence("wallGrab", [11])
 		]));
+		atlas.add(new SpriteSheetLoader("goomba", 32, 32, 0, [
+			new Sequence("walk", [0, 1]),
+			new Sequence("death", [2])
+		]));
+		atlas.add(new ImageLoader("background"));
+        atlas.add(new ImageLoader("cannon"));
+        atlas.add(new SpriteSheetLoader("explosion_52x65_19f",51,64,0,[Sequence.at("ball",0,0),Sequence.at("explode",1,19)]));
+        atlas.add(new SpriteSheetLoader("enemy_40x34_80f",40,34,0,[Sequence.at("walkSide",0,21),Sequence.at("walkUp",22,43),Sequence.at("walkDown",44,65),Sequence.at("death",66,79)]));
 		resources.add(atlas);
 	}
 
@@ -71,13 +98,29 @@ class GameState extends State {
 			 simulationLayer.addChild(mayonnaiseMap);
 		}, parseMapObjects);
 
-		//tray = new Tray(mayonnaiseMap);
-		//chivito = new ChivitoBoy(250, 200, simulationLayer);
-		//addChild(chivito);
-
 		stage.defaultCamera().limits(0, 0, worldMap.widthIntTiles * 32 * 1, worldMap.heightInTiles * 32 * 1);
 
 		createTouchJoystick();
+
+		///////////////////////////////////////////////
+		var points = LevelPositions.getLevelPathPoints();
+		var levelPathPoints:Array<Path> = new Array();
+		for(i in 0...(points.length-1)){
+			levelPathPoints.push(new Linear(points[i],points[i+1]));
+		}
+		GameData.levelPath = new Complex(levelPathPoints);
+		GameData.simulationLayer=new Layer();
+		GameData.explosionGroup=new CollisionGroup();
+		GameData.enemyCollisions=new CollisionGroup();
+
+		var cannonsPositions=LevelPositions.getCannonPoints();
+		for(pos in cannonsPositions){
+			addChild(new Cannon(pos.x,pos.y));
+		}
+
+		stage.addChild(GameData.simulationLayer);
+		//addChild(new EnemySpawner());
+		//////////////////////////////////////////////
 	}
 
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
@@ -85,7 +128,17 @@ class GameState extends State {
 			if(chivito == null){
 				chivito = new ChivitoBoy(object.x, object.y, simulationLayer);
 				addChild(chivito);
-			}	
+			}
+		}else
+		if(compareName(object, "enemyPosition")){
+			goomba = new Goomba(object.x, object.y, simulationLayer);
+			addChild(goomba);
+			/*
+			if(goomba == null){
+				goomba = new Goomba(object.x, object.y, simulationLayer);
+				addChild(goomba);
+			}
+			*/
 		}else
 		if(compareName(object, "winZone")){
 			winZone = new CollisionBox();
@@ -130,6 +183,7 @@ class GameState extends State {
 		stage.defaultCamera().setTarget(chivito.collision.x, chivito.collision.y);
 
 		CollisionEngine.collide(chivito.collision,worldMap.collision);
+		CollisionEngine.collide(goomba.collision,worldMap.collision);
 		if(CollisionEngine.overlap(chivito.collision, winZone)){
 			if(!(roomNbr == 3)){
 				roomNbr++;
