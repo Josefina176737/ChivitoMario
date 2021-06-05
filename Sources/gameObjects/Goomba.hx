@@ -22,15 +22,13 @@ class Goomba extends Entity
 	public function new(x:Float,y:Float,layer:Layer) 
 	{
 		super();
-		//display=new Sprite("enemy_40x34_80f");
 		display=new Sprite("goomba");
 		display.smooth = false;
 		layer.addChild(display);
 		collision = new CollisionBox();
 		collision.width = display.width();
-		collision.height = display.height()*0.5;
+		collision.height = display.height();
 		display.pivotX=display.width()*0.5;
-		display.offsetY = -display.height()*0.5;
 		
 		display.scaleX = display.scaleY = 1;
 		collision.x=x;

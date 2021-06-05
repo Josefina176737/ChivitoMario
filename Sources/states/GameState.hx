@@ -1,5 +1,6 @@
 package states;
 
+import com.collision.platformer.ICollider;
 import com.loading.basicResources.ImageLoader;
 //import gameObjects.EnemySpawner;
 import paths.Complex;
@@ -177,6 +178,11 @@ class GameState extends State {
 		gamepad.notify(chivito.onAxisChange, chivito.onButtonChange);
 	}
 
+	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
+		changeState(new EndGame(false, 1));
+		trace("chivitoVsGoomba");
+	}
+
 	override function update(dt:Float) {
 		super.update(dt);
 
@@ -195,10 +201,7 @@ class GameState extends State {
 				changeState(new InitState());
 			}
 		}
-
-		//tray.setContactPosition(chivito.collision.x + chivito.collision.width / 2, chivito.collision.y + chivito.collision.height + 1, Sides.BOTTOM);
-		//tray.setContactPosition(chivito.collision.x + chivito.collision.width + 1, chivito.collision.y + chivito.collision.height / 2, Sides.RIGHT);
-		//tray.setContactPosition(chivito.collision.x-1, chivito.collision.y+chivito.collision.height/2, Sides.LEFT);
+		CollisionEngine.overlap(chivito.collision, goomba.collision, chivitoVsGoomba);
 	}
 
 	#if DEBUGDRAW
