@@ -1,5 +1,8 @@
 package states;
 
+import com.gEngine.display.Text;
+import com.gEngine.helper.Screen;
+import com.loading.basicResources.FontLoader;
 import com.collision.platformer.ICollider;
 import com.loading.basicResources.ImageLoader;
 //import gameObjects.EnemySpawner;
@@ -52,18 +55,23 @@ class GameState extends State {
 	var room:String;
 	var roomNbr:Int;
 	var tileSet:String;
+	var enemyCount:Int;
+	var fontType:String = "AmaticB";
+	var score:Text;
+	var world:Text;
 
-	public function new(room:String, roomNbr:Int, tileSet:String) {
+	public function new(room:String, roomNbr:Int, tileSet:String, enemyCount:Int) {
 		super();
 		this.room = room;
 		this.roomNbr = roomNbr;
 		this.tileSet = tileSet;
+		this.enemyCount = enemyCount;
 	}
 
 	override function load(resources:Resources) {
 		resources.add(new DataLoader(room));
 		var atlas = new JoinAtlas(2048, 2048);
-
+		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
 		atlas.add(new SpriteSheetLoader("hero", 45, 60, 0, [
 			new Sequence("fall", [0]),
@@ -99,6 +107,9 @@ class GameState extends State {
 			 simulationLayer.addChild(mayonnaiseMap);
 		}, parseMapObjects);
 
+		playerPointsText();
+		worldText();
+
 		stage.defaultCamera().limits(0, 0, worldMap.widthIntTiles * 32 * 1, worldMap.heightInTiles * 32 * 1);
 
 		createTouchJoystick();
@@ -122,6 +133,22 @@ class GameState extends State {
 		stage.addChild(GameData.simulationLayer);
 		//addChild(new EnemySpawner());
 		//////////////////////////////////////////////
+	}
+
+	private function playerPointsText() {
+        score = new Text(fontType);
+        score.x = Screen.getWidth()-200;
+        score.y = 30;
+        score.text = "Score: " + enemyCount;
+        stage.addChild(score);
+    }
+
+	private function worldText() {
+		world = new Text(fontType);
+        world.x = Screen.getWidth()-1200;
+        world.y = 30;
+        world.text = "World " + roomNbr;
+        stage.addChild(world);
 	}
 
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
@@ -179,6 +206,10 @@ class GameState extends State {
 	}
 
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
+		goomba.damage();
+		enemyCount++;
+        score.text = "Score: " + enemyCount;
+		/*----------- descomentar y arreglar en version final ------------*
 		trace("chivitoVsGoomba");
 		trace("chivito.collision.y: " + chivito.collision.y);
 		trace("chivito.collision.height: " + chivito.collision.height);
@@ -190,8 +221,12 @@ class GameState extends State {
 				goomba.damage();
 		}else{
 			trace("Goomba gana");
-			changeState(new EndGame(false, 1));
+			if(!(goomba.isDead())){
+				chivito.die();
+				changeState(new EndGame(false, 1));
+			}
 		}
+		*----------- descomentar y arreglar en version final ------------*/
 	}
 
 	override function update(dt:Float) {
@@ -200,19 +235,26 @@ class GameState extends State {
 		stage.defaultCamera().setTarget(chivito.collision.x, chivito.collision.y);
 
 		CollisionEngine.collide(chivito.collision,worldMap.collision);
-		CollisionEngine.collide(goomba.collision,worldMap.collision);
+		
+		if(!(goomba == null)){
+			CollisionEngine.collide(goomba.collision,worldMap.collision);
+		}
+		
 		if(CollisionEngine.overlap(chivito.collision, winZone)){
 			if(!(roomNbr == 3)){
 				roomNbr++;
 				room = "screen_" + roomNbr + "_tmx";
 				tileSet = "tiles" + roomNbr;
 				
-				changeState(new GameState(room, roomNbr, tileSet));
+				changeState(new GameState(room, roomNbr, tileSet, enemyCount));
 			}else{
 				changeState(new InitState());
 			}
 		}
-		CollisionEngine.overlap(chivito.collision, goomba.collision, chivitoVsGoomba);
+		
+		if(!(goomba == null)){
+			CollisionEngine.overlap(chivito.collision, goomba.collision, chivitoVsGoomba);
+		}	
 	}
 
 	#if DEBUGDRAW
