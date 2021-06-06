@@ -179,8 +179,19 @@ class GameState extends State {
 	}
 
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
-		changeState(new EndGame(false, 1));
 		trace("chivitoVsGoomba");
+		trace("chivito.collision.y: " + chivito.collision.y);
+		trace("chivito.collision.height: " + chivito.collision.height);
+		trace("goomba.collision.y: " + goomba.collision.y);
+		trace("goomba.collision.height: " + goomba.collision.height);
+		trace("cuenta: " + (goomba.collision.y - chivito.collision.y));
+		if(goomba.collision.y - chivito.collision.y >= 0){
+			trace("Chivito gana");
+				goomba.damage();
+		}else{
+			trace("Goomba gana");
+			changeState(new EndGame(false, 1));
+		}
 	}
 
 	override function update(dt:Float) {

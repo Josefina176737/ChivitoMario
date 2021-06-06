@@ -56,7 +56,6 @@ class Goomba extends Entity
 	
 	override public function update(dt:Float):Void 
 	{
-		/*
 		if (dying)
 		{
 			if (!display.timeline.playing) {
@@ -64,23 +63,19 @@ class Goomba extends Entity
 			}
 		}else
 		{
-		*/
 			pathWalker.update(dt);
 			collision.x = pathWalker.x;
 			collision.y = pathWalker.y;
 			collision.update(dt);
-		/*	
 			
-			
-			dir.x = collision.x - collision.lastX;
-			dir.y = collision.y - collision.lastY;
+			//dir.x = collision.x - collision.lastX;
+			//dir.y = collision.y - collision.lastY;
 			
 			collision.update(dt);
 			//if(pathWalker.finish()){
 			//	die();
 			//}
 		}
-		*/
 		super.update(dt);
 	}
 	
