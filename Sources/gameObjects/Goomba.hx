@@ -59,6 +59,7 @@ class Goomba extends Entity
 		if (dying)
 		{
 			if (!display.timeline.playing) {
+				display.removeFromParent();
 				die();
 			}
 		}else

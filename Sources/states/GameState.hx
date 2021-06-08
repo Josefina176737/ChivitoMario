@@ -1,5 +1,6 @@
 package states;
 
+import gameObjects.Flower;
 import com.gEngine.display.Text;
 import com.gEngine.helper.Screen;
 import com.loading.basicResources.FontLoader;
@@ -46,6 +47,7 @@ class GameState extends State {
 	var worldMap:Tilemap;
 	var chivito:ChivitoBoy;
 	var goomba:Goomba; //ver si esto no hay que agruparlo
+	var flower:Flower;
 	var simulationLayer:Layer;
 	var touchJoystick:VirtualGamepad;
 	var tray:helpers.Tray;
@@ -59,6 +61,7 @@ class GameState extends State {
 	var fontType:String = "AmaticB";
 	var score:Text;
 	var world:Text;
+	var powerUp:Text;
 
 	public function new(room:String, roomNbr:Int, tileSet:String, enemyCount:Int) {
 		super();
@@ -81,9 +84,20 @@ class GameState extends State {
 			new Sequence("idle", [10]),
 			new Sequence("wallGrab", [11])
 		]));
+		atlas.add(new SpriteSheetLoader("hero_red", 45, 60, 0, [
+			new Sequence("fall", [0]),
+			new Sequence("slide", [0]),
+			new Sequence("jump", [1]),
+			new Sequence("run", [2, 3, 4, 5, 6, 7, 8, 9]),
+			new Sequence("idle", [10]),
+			new Sequence("wallGrab", [11])
+		]));
 		atlas.add(new SpriteSheetLoader("goomba", 32, 32, 0, [
 			new Sequence("walk", [0, 1]),
 			new Sequence("death", [2])
+		]));
+		atlas.add(new SpriteSheetLoader("flower", 50, 50, 0, [
+			new Sequence("idle", [0, 1, 2, 3])
 		]));
 		atlas.add(new ImageLoader("background"));
         atlas.add(new ImageLoader("cannon"));
@@ -151,6 +165,14 @@ class GameState extends State {
         stage.addChild(world);
 	}
 
+	private function powerUpText(){
+		powerUp = new Text(fontType);
+		powerUp.x = Screen.getWidth()*0.5;
+		powerUp.y = 30;
+        powerUp.text = "Power up!";
+        stage.addChild(powerUp);
+	}
+
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
 		if(compareName(object, "playerPosition")){
 			if(chivito == null){
@@ -167,6 +189,10 @@ class GameState extends State {
 				addChild(goomba);
 			}
 			*/
+		}else
+		if(compareName(object, "itemPosition")){
+			flower = new Flower(object.x, object.y, simulationLayer);
+			addChild(flower);
 		}else
 		if(compareName(object, "winZone")){
 			winZone = new CollisionBox();
@@ -229,6 +255,12 @@ class GameState extends State {
 		*----------- descomentar y arreglar en version final ------------*/
 	}
 
+	function flowerPowerUp(playerC:ICollider, invaderC:ICollider) {
+		powerUpText();
+		//TODO: Hacer que chivito empiece a disparar balas
+		flower.powerUpUsed();//TODO: Hacer que la flor desaparezca
+	}
+
 	override function update(dt:Float) {
 		super.update(dt);
 
@@ -238,6 +270,10 @@ class GameState extends State {
 		
 		if(!(goomba == null)){
 			CollisionEngine.collide(goomba.collision,worldMap.collision);
+		}
+
+		if(!(flower == null)){
+			CollisionEngine.collide(flower.collision,worldMap.collision);
 		}
 		
 		if(CollisionEngine.overlap(chivito.collision, winZone)){
@@ -254,7 +290,11 @@ class GameState extends State {
 		
 		if(!(goomba == null)){
 			CollisionEngine.overlap(chivito.collision, goomba.collision, chivitoVsGoomba);
-		}	
+		}
+		
+		if(!(flower == null)){
+			CollisionEngine.overlap(chivito.collision, flower.collision, flowerPowerUp);
+		}
 	}
 
 	#if DEBUGDRAW
