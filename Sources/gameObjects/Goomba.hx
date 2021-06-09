@@ -1,5 +1,6 @@
 package gameObjects;
 
+import com.collision.platformer.Sides;
 import com.gEngine.display.Layer;
 import paths.Complex;
 import paths.Bezier;
@@ -86,29 +87,12 @@ class Goomba extends Entity
 	}
 
 	override function render() {
-		//-------------------------------------
 		var s = Math.abs(collision.velocityX / collision.maxVelocityX);
 		display.timeline.frameRate = (1 / 24) * s + (1 - s) * (1 / 10);
-		display.timeline.playAnimation("walk");
-		//-------------------------------------
-		/*if (Math.abs(dir.x) >= Math.abs(dir.y))
-			{	
-				display.timeline.playAnimation("walkSide");
-				if (dir.x > 0) 	
-				{
-					display.scaleX=1;
-				}else {
-					display.scaleX=-1;
-				}
-			}else {
-				if (dir.y > 0)
-				{
-					display.timeline.playAnimation("walkDown");
-				}else {
-					display.timeline.playAnimation("walkUp");
-				}
-			}
-		*/
+		if (!dying)
+		{
+			display.timeline.playAnimation("walk");
+		}
 
 		display.x=collision.x;
 		display.y=collision.y;

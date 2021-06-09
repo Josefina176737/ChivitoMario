@@ -1,5 +1,6 @@
 package states;
 
+import com.gEngine.display.StaticLayer;
 import gameObjects.Flower;
 import com.gEngine.display.Text;
 import com.gEngine.helper.Screen;
@@ -49,6 +50,7 @@ class GameState extends State {
 	var goomba:Goomba; //ver si esto no hay que agruparlo
 	var flower:Flower;
 	var simulationLayer:Layer;
+	var hudLayer:StaticLayer;
 	var touchJoystick:VirtualGamepad;
 	var tray:helpers.Tray;
 	var mayonnaiseMap:TileMapDisplay;
@@ -109,7 +111,9 @@ class GameState extends State {
 	override function init() {
 		stageColor(0.5, .5, 0.5);
 		simulationLayer = new Layer();
+		hudLayer = new StaticLayer();
 		stage.addChild(simulationLayer);
+		stage.addChild(hudLayer);
 
 		worldMap = new Tilemap(room, tileSet);
 		worldMap.init(function(layerTilemap, tileLayer) {
@@ -154,7 +158,7 @@ class GameState extends State {
         score.x = Screen.getWidth()-200;
         score.y = 30;
         score.text = "Score: " + enemyCount;
-        stage.addChild(score);
+        hudLayer.addChild(score);
     }
 
 	private function worldText() {
@@ -162,7 +166,7 @@ class GameState extends State {
         world.x = Screen.getWidth()-1200;
         world.y = 30;
         world.text = "World " + roomNbr;
-        stage.addChild(world);
+        hudLayer.addChild(world);
 	}
 
 	private function powerUpText(){
@@ -170,7 +174,7 @@ class GameState extends State {
 		powerUp.x = Screen.getWidth()*0.5;
 		powerUp.y = 30;
         powerUp.text = "Power up!";
-        stage.addChild(powerUp);
+        hudLayer.addChild(powerUp);
 	}
 
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
