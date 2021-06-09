@@ -72,7 +72,5 @@
     <property name="zone3" value=""/>
    </properties>
   </object>
-  <object id="12" name="itemPosition" x="600" y="22" width="68" height="58"/>
-  <object id="13" x="258" y="-80"/>
  </objectgroup>
 </map>

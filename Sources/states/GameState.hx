@@ -206,7 +206,7 @@ class GameState extends State {
 			winZone.height = object.height;
 		}
 		
-		/*
+		//Checkear
 		if(compareName(object, "winZone1")){
 				winZone1 = new CollisionBox();
 				winZone1.x = object.x;
@@ -214,7 +214,7 @@ class GameState extends State {
 				winZone1.width = object.width;
 				winZone1.height = object.height;
 		}
-		*/
+		
 	}
 	
 	inline function compareName(object:TmxObject, name:String) {
