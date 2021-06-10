@@ -16,7 +16,6 @@ import paths.PathWalker;
 import com.framework.utils.State;
 import com.collision.platformer.CollisionGroup;
 import gameObjects.GameData;
-import gameObjects.Cannon;
 import gameObjects.Goomba;
 import com.collision.platformer.CollisionBox;
 import helpers.Tray;
@@ -132,22 +131,8 @@ class GameState extends State {
 
 		createTouchJoystick();
 
-		///////////////////////////////////////////////
-		var points = LevelPositions.getLevelPathPoints();
-		var levelPathPoints:Array<Path> = new Array();
-		for(i in 0...(points.length-1)){
-			levelPathPoints.push(new Linear(points[i],points[i+1]));
-		}
-		GameData.levelPath = new Complex(levelPathPoints);
 		GameData.simulationLayer=new Layer();
-		GameData.explosionGroup=new CollisionGroup();
-		GameData.enemyCollisions=new CollisionGroup();
 		GameData.goombaCollisions=new CollisionGroup();
-
-		var cannonsPositions=LevelPositions.getCannonPoints();
-		for(pos in cannonsPositions){
-			addChild(new Cannon(pos.x,pos.y));
-		}
 
 		var goombaPosList:List<FastVector2> = LevelPositions.getGoombaPoints();
 		var goombaCount = Math.floor(goombaPosList.length/2);
@@ -164,10 +149,7 @@ class GameState extends State {
 			addChild(goomba);
 		}
 
-
 		stage.addChild(GameData.simulationLayer);
-		//addChild(new EnemySpawner());
-		//////////////////////////////////////////////
 	}
 
 	private function playerPointsText() {
@@ -284,11 +266,6 @@ class GameState extends State {
 
 		CollisionEngine.collide(chivito.collision,worldMap.collision);
 		
-		/*
-		if(!(goomba == null)){
-			CollisionEngine.collide(goomba.collision,worldMap.collision);
-		}
-		*/
 		CollisionEngine.collide(GameData.goombaCollisions,worldMap.collision);
 
 		if(!(flower == null)){

@@ -1,7 +1,5 @@
 package;
 
-import states.Kingdom;
-import states.TestBase;
 import states.InitState;
 import kha.WindowMode;
 import kha.FramebufferOptions;
@@ -20,23 +18,10 @@ class Main {
 	
 	public static function main() {
 		#if hotml new hotml.Client(); #end
-		var windowsOptions=new WindowOptions("clase3",0,0,1280,720,null,true,WindowFeatures.FeatureResizable,WindowMode.Windowed);
+		var windowsOptions=new WindowOptions("ChivitoMario",0,0,1280,720,null,true,WindowFeatures.FeatureResizable,WindowMode.Windowed);
 		var frameBufferOptions=new FramebufferOptions(60,true,32,16,8,0);
-		System.start(new SystemOptions("clase3",1280,720,windowsOptions,frameBufferOptions), function (w) {
+		System.start(new SystemOptions("ChivitoMario",1280,720,windowsOptions,frameBufferOptions), function (w) {
 			new Simulation(InitState,1280,720,1,0);
-			//new Simulation(TestBase,700,600);
-			//new Simulation(Kingdom,1280,720);
 		});
 	}
-	/*
-	public static function main() {
-		#if hotml new hotml.Client(); #end
-		
-			var windowsOptions=new WindowOptions("kingdomRush",0,0,700,600,null,true,WindowFeatures.FeatureResizable,WindowMode.Windowed);
-		var frameBufferOptions=new FramebufferOptions();
-		System.start(new SystemOptions("kingdomRush",700,600,windowsOptions,frameBufferOptions), function (w) {
-			//new Simulation(GameState,700,600);
-			new Simulation(TestBase,700,600);
-        });
-	*/
 }

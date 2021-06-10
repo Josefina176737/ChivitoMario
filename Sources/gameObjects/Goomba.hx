@@ -44,15 +44,10 @@ class Goomba extends Entity
 		collision.dragX = 0.9;
 		collisionGroup.add(collision);
 
-		//pathWalker = new PathWalker(GameData.levelPath,10,PlayMode.None); //Hay algo de aca que esta en nulo, el level path probablemente
 		var goombaPosList:List<FastVector2> = LevelPositions.getGoombaPoints();
-
-		//var linearPath = new Linear(new FastVector2(500,613),new FastVector2(980,613));
 		
 		var linearPath = new Linear(init, end);
         pathWalker = new PathWalker(linearPath, 10, PlayMode.Pong);
-		///---------------------------------------------------------
-		//reset();
 	}
 	
 	override public function update(dt:Float):Void 
@@ -69,14 +64,6 @@ class Goomba extends Entity
 			collision.x = pathWalker.x;
 			collision.y = pathWalker.y;
 			collision.update(dt);
-			
-			//dir.x = collision.x - collision.lastX;
-			//dir.y = collision.y - collision.lastY;
-			
-			collision.update(dt);
-			//if(pathWalker.finish()){
-			//	die();
-			//}
 		}
 		super.update(dt);
 	}
@@ -98,13 +85,6 @@ class Goomba extends Entity
 		display.y=collision.y;
 		super.render();
 		
-	}
-	public function reset():Void 
-	{
-		//dying = false;
- 	    //GameData.simulationLayer.addChild(display);
-		//GameData.enemyCollisions.add(collision);
-		//display.timeline.playAnimation("walkSide");
 	}
 	
 	private var mDeath:Bool;
