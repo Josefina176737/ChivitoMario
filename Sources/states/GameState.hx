@@ -226,31 +226,21 @@ class GameState extends State {
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
 		for(goomba in GameData.goombas){
 			if(!(goomba.isDead())){
+				chivito.die();
+				changeState(new EndGame(false, 1));
+			}
+		}
+		
+		/* -- funcionalidad con la estrella
+		for(goomba in GameData.goombas){
+			if(!(goomba.isDead())){
 				goomba.damage();
 				goomba.die();
 				enemyCount++;
 				score.text = "Score: " + enemyCount;
 			}
 		}
-		
-		/*----------- descomentar y arreglar en version final ------------*
-		trace("chivitoVsGoomba");
-		trace("chivito.collision.y: " + chivito.collision.y);
-		trace("chivito.collision.height: " + chivito.collision.height);
-		trace("goomba.collision.y: " + goomba.collision.y);
-		trace("goomba.collision.height: " + goomba.collision.height);
-		trace("cuenta: " + (goomba.collision.y - chivito.collision.y));
-		if(goomba.collision.y - chivito.collision.y >= 0){
-			trace("Chivito gana");
-				goomba.damage();
-		}else{
-			trace("Goomba gana");
-			if(!(goomba.isDead())){
-				chivito.die();
-				changeState(new EndGame(false, 1));
-			}
-		}
-		*----------- descomentar y arreglar en version final ------------*/
+		*/
 	}
 
 	function flowerPowerUp(playerC:ICollider, invaderC:ICollider) {

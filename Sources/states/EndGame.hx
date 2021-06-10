@@ -54,7 +54,7 @@ class EndGame extends State {
     override function update(dt:Float) {
         super.update(dt);
         if(Input.i.isKeyCodePressed(KeyCode.Space)){
-            this.changeState(new GameState("screen_1_tmx",1,"tiles1"));
+            this.changeState(new GameState("screen_1_tmx",1,"tiles1",0));
         }
     }
 }
