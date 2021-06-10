@@ -24,8 +24,7 @@ class InitState extends State {
         var atlas = new JoinAtlas(1024, 1024);
         atlas.add(new FontLoader(fontType,70));
         atlas.add(new ImageLoader("TitleScreen"));
-        resources.add(atlas);     
-
+        resources.add(atlas);
     }
 
     override function init() {
