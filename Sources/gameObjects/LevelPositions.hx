@@ -4,9 +4,9 @@ import kha.math.FastVector2;
 
 class LevelPositions
 {
-	public static function getGoombaPoints():Array<FastVector2>
+	public static function getGoombaPoints():List<FastVector2>
 	{
-		var goombaPosList:Array<FastVector2> = new Array<FastVector2>();
+		var goombaPosList:List<FastVector2> = new List<FastVector2>();
 		//2nd goomba
 		goombaPosList.push(new FastVector2(880, 613));
 		goombaPosList.push(new FastVector2(600, 613));

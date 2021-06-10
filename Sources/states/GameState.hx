@@ -149,13 +149,20 @@ class GameState extends State {
 			addChild(new Cannon(pos.x,pos.y));
 		}
 
-		/*
-		var goombasPerLevel = GameData.
+		var goombaPosList:List<FastVector2> = LevelPositions.getGoombaPoints();
+		var goombaCount = Math.floor(goombaPosList.length/2);
+		var init:FastVector2;
+		var end:FastVector2;
 
-		for(pos in cannonsPositions){
-			addChild(new Cannon(pos.x,pos.y));
+		for(i in 0...goombaCount){
+
+			init = goombaPosList.pop();
+			end = goombaPosList.pop();
+
+			goomba = new Goomba(init.x, init.y, simulationLayer, GameData.goombaCollisions, init, end);
+			GameData.goombas.add(goomba);
+			addChild(goomba);
 		}
-		*/
 
 
 		stage.addChild(GameData.simulationLayer);
@@ -194,19 +201,6 @@ class GameState extends State {
 				addChild(chivito);
 			}
 		}else
-		if(compareName(object, "enemyPosition")){
-			if(GameData.goombaCollisions == null){
-				GameData.goombaCollisions=new CollisionGroup();
-			}
-			goomba = new Goomba(object.x, object.y, simulationLayer, GameData.goombaCollisions);
-			addChild(goomba);
-			/*
-			if(goomba == null){
-				goomba = new Goomba(object.x, object.y, simulationLayer, GameData.goombaCollisions);
-				addChild(goomba);
-			}
-			*/
-		}else
 		if(compareName(object, "itemPosition")){
 			flower = new Flower(object.x, object.y, simulationLayer);
 			addChild(flower);
@@ -218,7 +212,7 @@ class GameState extends State {
 			winZone.width = object.width;
 			winZone.height = object.height;
 		}
-		
+
 		//Checkear
 		if(compareName(object, "winZone1")){
 				winZone1 = new CollisionBox();
@@ -248,11 +242,13 @@ class GameState extends State {
 	}
 
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
-		if(!(goomba.isDead())){
-			goomba.damage();
-			goomba.die();
-			enemyCount++;
-			score.text = "Score: " + enemyCount;
+		for(goomba in GameData.goombas){
+			if(!(goomba.isDead())){
+				goomba.damage();
+				goomba.die();
+				enemyCount++;
+				score.text = "Score: " + enemyCount;
+			}
 		}
 		
 		/*----------- descomentar y arreglar en version final ------------*

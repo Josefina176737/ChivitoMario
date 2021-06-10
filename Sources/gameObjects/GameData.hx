@@ -11,7 +11,7 @@ class GameData {
 	public static var explosionGroup:CollisionGroup;
 	public static var enemyCollisions:CollisionGroup;
 	public static var goombaCollisions:CollisionGroup;
-	public static var goombas:Array<Goomba> = new Array();
+	public static var goombas:List<Goomba> = new List();
 
 	public static function clear():Void {
 		levelPath = null;

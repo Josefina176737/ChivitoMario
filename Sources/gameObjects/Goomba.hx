@@ -21,7 +21,7 @@ class Goomba extends Entity
 	var dying:Bool;
 	var dir:FastVector2;
 	
-	public function new(x:Float,y:Float,layer:Layer, collisionGroup:CollisionGroup) 
+	public function new(x:Float,y:Float,layer:Layer, collisionGroup:CollisionGroup, init:FastVector2, end:FastVector2) 
 	{
 		super();
 		display=new Sprite("goomba");
@@ -45,9 +45,7 @@ class Goomba extends Entity
 		collisionGroup.add(collision);
 
 		//pathWalker = new PathWalker(GameData.levelPath,10,PlayMode.None); //Hay algo de aca que esta en nulo, el level path probablemente
-		var goombaPosList:Array<FastVector2> = LevelPositions.getGoombaPoints();
-		var init:FastVector2 = goombaPosList.pop();
-		var end:FastVector2 = goombaPosList.pop();
+		var goombaPosList:List<FastVector2> = LevelPositions.getGoombaPoints();
 
 		//var linearPath = new Linear(new FastVector2(500,613),new FastVector2(980,613));
 		
