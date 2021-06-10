@@ -36,7 +36,7 @@ class PathWalker
 	{
 		time += dt;
 		var s = time / totalTime;
-		if(s > 1){
+		if(s > 1){ //
 			time = totalTime;
 			if(playMode == PlayMode.None){
 				s = 1;
@@ -57,8 +57,9 @@ class PathWalker
 				s = -s;
 			}
 		}
-
+		trace(s);
 		var currentPosition = path.getPos(s);
+		trace(currentPosition.x);
 		position.x = currentPosition.x;
 		position.y = currentPosition.y;
 	}

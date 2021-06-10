@@ -4,6 +4,20 @@ import kha.math.FastVector2;
 
 class LevelPositions
 {
+	public static function getGoombaPoints():Array<FastVector2>
+	{
+		var goombaPosList:Array<FastVector2> = new Array<FastVector2>();
+		//2nd goomba
+		goombaPosList.push(new FastVector2(880, 613));
+		goombaPosList.push(new FastVector2(600, 613));
+		
+		//1st goomba
+		goombaPosList.push(new FastVector2(980, 613));
+		goombaPosList.push(new FastVector2(500, 613));
+
+		return goombaPosList;
+	}
+	
 	public static function getCannonPoints():Array<FastVector2>
 	{
 		var cannonPosList:Array<FastVector2> = new Array<FastVector2>();

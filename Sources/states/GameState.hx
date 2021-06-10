@@ -142,11 +142,21 @@ class GameState extends State {
 		GameData.simulationLayer=new Layer();
 		GameData.explosionGroup=new CollisionGroup();
 		GameData.enemyCollisions=new CollisionGroup();
+		GameData.goombaCollisions=new CollisionGroup();
 
 		var cannonsPositions=LevelPositions.getCannonPoints();
 		for(pos in cannonsPositions){
 			addChild(new Cannon(pos.x,pos.y));
 		}
+
+		/*
+		var goombasPerLevel = GameData.
+
+		for(pos in cannonsPositions){
+			addChild(new Cannon(pos.x,pos.y));
+		}
+		*/
+
 
 		stage.addChild(GameData.simulationLayer);
 		//addChild(new EnemySpawner());
@@ -185,11 +195,14 @@ class GameState extends State {
 			}
 		}else
 		if(compareName(object, "enemyPosition")){
-			goomba = new Goomba(object.x, object.y, simulationLayer);
+			if(GameData.goombaCollisions == null){
+				GameData.goombaCollisions=new CollisionGroup();
+			}
+			goomba = new Goomba(object.x, object.y, simulationLayer, GameData.goombaCollisions);
 			addChild(goomba);
 			/*
 			if(goomba == null){
-				goomba = new Goomba(object.x, object.y, simulationLayer);
+				goomba = new Goomba(object.x, object.y, simulationLayer, GameData.goombaCollisions);
 				addChild(goomba);
 			}
 			*/
@@ -214,7 +227,6 @@ class GameState extends State {
 				winZone1.width = object.width;
 				winZone1.height = object.height;
 		}
-		
 	}
 	
 	inline function compareName(object:TmxObject, name:String) {
@@ -236,9 +248,13 @@ class GameState extends State {
 	}
 
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
-		goomba.damage();
-		enemyCount++;
-        score.text = "Score: " + enemyCount;
+		if(!(goomba.isDead())){
+			goomba.damage();
+			goomba.die();
+			enemyCount++;
+			score.text = "Score: " + enemyCount;
+		}
+		
 		/*----------- descomentar y arreglar en version final ------------*
 		trace("chivitoVsGoomba");
 		trace("chivito.collision.y: " + chivito.collision.y);
@@ -272,9 +288,12 @@ class GameState extends State {
 
 		CollisionEngine.collide(chivito.collision,worldMap.collision);
 		
+		/*
 		if(!(goomba == null)){
 			CollisionEngine.collide(goomba.collision,worldMap.collision);
 		}
+		*/
+		CollisionEngine.collide(GameData.goombaCollisions,worldMap.collision);
 
 		if(!(flower == null)){
 			CollisionEngine.collide(flower.collision,worldMap.collision);

@@ -10,6 +10,8 @@ class GameData {
 	public static var HUDLayer:Layer;
 	public static var explosionGroup:CollisionGroup;
 	public static var enemyCollisions:CollisionGroup;
+	public static var goombaCollisions:CollisionGroup;
+	public static var goombas:Array<Goomba> = new Array();
 
 	public static function clear():Void {
 		levelPath = null;
@@ -17,5 +19,7 @@ class GameData {
 		simulationLayer = null;
 		explosionGroup = null;
 		enemyCollisions = null;
+		goombaCollisions = null;
+		goombas = null;
 	}
 }

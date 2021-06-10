@@ -6,6 +6,7 @@ import paths.Complex;
 import paths.Bezier;
 import paths.Linear;
 import com.gEngine.helper.RectangleDisplay;
+import com.collision.platformer.CollisionGroup;
 import kha.math.FastVector2;
 import com.collision.platformer.CollisionBox;
 import com.gEngine.display.Sprite;
@@ -20,7 +21,7 @@ class Goomba extends Entity
 	var dying:Bool;
 	var dir:FastVector2;
 	
-	public function new(x:Float,y:Float,layer:Layer) 
+	public function new(x:Float,y:Float,layer:Layer, collisionGroup:CollisionGroup) 
 	{
 		super();
 		display=new Sprite("goomba");
@@ -41,16 +42,17 @@ class Goomba extends Entity
 		collision.maxVelocityX = 500;
 		collision.maxVelocityY = 800;
 		collision.dragX = 0.9;
-		
-
-		//dir = new FastVector2(1,0);
+		collisionGroup.add(collision);
 
 		//pathWalker = new PathWalker(GameData.levelPath,10,PlayMode.None); //Hay algo de aca que esta en nulo, el level path probablemente
+		var goombaPosList:Array<FastVector2> = LevelPositions.getGoombaPoints();
+		var init:FastVector2 = goombaPosList.pop();
+		var end:FastVector2 = goombaPosList.pop();
 
-		///------------ solo para testear ----------
-		//var linearPath = new Linear(new FastVector2(300,200),new FastVector2(400,100)); se ve en pantalla, va para cualquier lado
-		var linearPath = new Linear(new FastVector2(500,660),new FastVector2(980,660));
-        pathWalker = new PathWalker(linearPath, 10, PlayMode.Loop);
+		//var linearPath = new Linear(new FastVector2(500,613),new FastVector2(980,613));
+		
+		var linearPath = new Linear(init, end);
+        pathWalker = new PathWalker(linearPath, 10, PlayMode.Pong);
 		///---------------------------------------------------------
 		//reset();
 	}
