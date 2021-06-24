@@ -147,7 +147,6 @@ class GameState extends State {
 			end = goombaPosList.pop();
 
 			goomba = new Goomba(init.x, init.y, simulationLayer, GameData.goombaCollisions, init, end);
-			GameData.goombas.add(goomba);
 			addChild(goomba);
 		}
 
