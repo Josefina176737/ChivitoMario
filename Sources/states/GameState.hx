@@ -290,15 +290,13 @@ class GameState extends State {
 			}
 		}
 		
-		if(!(goomba == null)){
-			CollisionEngine.overlap(chivito.collision, goomba.collision, chivitoVsGoomba);
-		}
+		CollisionEngine.overlap(chivito.collision, GameData.goombaCollisions, chivitoVsGoomba);
 		
 		if(!(flower == null)){
 			CollisionEngine.overlap(chivito.collision, flower.collision, flowerPowerUp);
 		}
 
-		if(!(flower == null)){
+		if(!(star == null)){
 			CollisionEngine.overlap(chivito.collision, star.collision, starPowerUp);
 		}
 	}

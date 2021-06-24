@@ -34,7 +34,7 @@ class PathWalker
 	}
 	public function update(dt:Float):Void
 	{
-		time += dt;
+		time += dt*direction;
 		var s = time / totalTime;
 		if(s > 1){ //
 			time = totalTime;
