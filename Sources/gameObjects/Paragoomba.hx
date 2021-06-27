@@ -1,5 +1,6 @@
 package gameObjects;
 
+import paths.Bezier;
 import com.gEngine.display.Layer;
 import paths.Linear;
 import com.collision.platformer.CollisionGroup;
@@ -9,7 +10,7 @@ import com.gEngine.display.Sprite;
 import paths.PathWalker;
 import com.framework.utils.Entity;
 
-class Goomba extends Entity
+class Paragoomba extends Entity
 {
 	private var pathWalker:PathWalker;
 	public var display:Sprite;
@@ -17,10 +18,10 @@ class Goomba extends Entity
 	var dying:Bool;
 	var dir:FastVector2;
 	
-	public function new(x:Float,y:Float,layer:Layer, collisionGroup:CollisionGroup, init:FastVector2, end:FastVector2) 
+	public function new(x:Float,y:Float,layer:Layer, collisionGroup:CollisionGroup, init:FastVector2, c1:FastVector2, c2:FastVector2, end:FastVector2) 
 	{
 		super();
-		display=new Sprite("goomba");
+		display=new Sprite("paragoomba");
 		display.smooth = false;
 		layer.addChild(display);
 		collision = new CollisionBox();
@@ -40,8 +41,8 @@ class Goomba extends Entity
 		collision.dragX = 0.9;
 		collisionGroup.add(collision);
 		
-		var linearPath = new Linear(init, end);
-        pathWalker = new PathWalker(linearPath, 10, PlayMode.Pong);
+		var bezierPath = new Bezier(init, c1, c2, end);
+        pathWalker = new PathWalker(bezierPath, 10, PlayMode.Pong);
 	}
 	
 	override public function update(dt:Float):Void 

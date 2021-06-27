@@ -15,18 +15,14 @@ class Linear implements Path {
     }
 
 	public function getPos(s:Float):FastVector2 {
-		//var result = start.add(end.sub(start).mult(s)); //hacemos esto para evitar el new (haxe dependiente)
-        //temp.setFrom(result);
-        //return result;
 
-        temp.x = start.x + (end.x - start.x) * s; //Calculandolo a mano sin usar las funciones de Haxe de vectores.
+        temp.x = start.x + (end.x - start.x) * s;
         temp.y = start.y + (end.y - start.y) * s;
         
         return temp;
 	}
 
 	public function getLength():Float {
-		//return end.sub(start).length;
 
         var deltaX = end.x - start.x;
         var deltaY = end.y - start.y;

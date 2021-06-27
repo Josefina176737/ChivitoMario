@@ -1,5 +1,7 @@
 package states;
 
+import gameObjects.Paragoomba;
+import gameObjects.PowerUp;
 import gameObjects.Star;
 import com.gEngine.display.StaticLayer;
 import gameObjects.Flower;
@@ -8,12 +10,6 @@ import com.gEngine.helper.Screen;
 import com.loading.basicResources.FontLoader;
 import com.collision.platformer.ICollider;
 import com.loading.basicResources.ImageLoader;
-import paths.Complex;
-import paths.Bezier;
-import kha.math.FastVector2;
-import paths.Linear;
-import paths.PathWalker;
-import com.framework.utils.State;
 import com.collision.platformer.CollisionGroup;
 import gameObjects.GameData;
 import gameObjects.Goomba;
@@ -21,11 +17,6 @@ import com.collision.platformer.CollisionBox;
 import helpers.Tray;
 import com.gEngine.display.extra.TileMapDisplay;
 import gameObjects.LevelPositions;
-import paths.Path;
-import paths.Linear;
-import paths.Complex;
-import paths.Bezier;
-import com.collision.platformer.Sides;
 import com.framework.utils.XboxJoystick;
 import com.framework.utils.VirtualGamepad;
 import format.tmx.Data.TmxObject;
@@ -46,7 +37,9 @@ import kha.math.FastVector2;
 class GameState extends State {
 	var worldMap:Tilemap;
 	var chivito:ChivitoBoy;
-	var goomba:Goomba; //ver si esto no hay que agruparlo
+	var goomba:Goomba;
+	var paragoomba:Paragoomba;
+	//var powerUp:PowerUp;
 	var flower:Flower;
 	var star:Star;
 	var simulationLayer:Layer;
@@ -63,7 +56,7 @@ class GameState extends State {
 	var fontType:String = "AmaticB";
 	var score:Text;
 	var world:Text;
-	var powerUp:Text;
+	var powerUpText:Text;
 
 	public function new(room:String, roomNbr:Int, tileSet:String, enemyCount:Int) {
 		super();
@@ -98,6 +91,10 @@ class GameState extends State {
 			new Sequence("walk", [0, 1]),
 			new Sequence("death", [2])
 		]));
+		atlas.add(new SpriteSheetLoader("paragoomba", 47, 32, 0, [
+			new Sequence("walk", [0, 1]),
+			new Sequence("death", [2])
+		]));
 		atlas.add(new SpriteSheetLoader("flower", 50, 50, 0, [
 			new Sequence("idle", [0, 1, 2, 3])
 		]));
@@ -110,6 +107,7 @@ class GameState extends State {
 	}
 
 	override function init() {
+		GameData.PWACollisions=new CollisionGroup();
 		stageColor(0.5, .5, 0.5);
 		simulationLayer = new Layer();
 		hudLayer = new StaticLayer();
@@ -134,12 +132,13 @@ class GameState extends State {
 		createTouchJoystick();
 
 		GameData.simulationLayer=new Layer();
+
+		var init:FastVector2;
+		var end:FastVector2;
 		GameData.goombaCollisions=new CollisionGroup();
 
 		var goombaPosList:List<FastVector2> = LevelPositions.getGoombaPoints();
 		var goombaCount = Math.floor(goombaPosList.length/2);
-		var init:FastVector2;
-		var end:FastVector2;
 
 		for(i in 0...goombaCount){
 
@@ -147,10 +146,30 @@ class GameState extends State {
 			end = goombaPosList.pop();
 
 			goomba = new Goomba(init.x, init.y, simulationLayer, GameData.goombaCollisions, init, end);
+			GameData.goombas.add(goomba);
 			addChild(goomba);
 		}
 
 		stage.addChild(GameData.simulationLayer);
+
+		GameData.paragoombaCollisions=new CollisionGroup();
+		var paragoombaPosList:List<FastVector2> = LevelPositions.getParagoombaPoints();
+		var paragoombaCount = Math.floor(paragoombaPosList.length/2);
+
+		var c1:FastVector2;
+		var c2:FastVector2;
+
+		for(i in 0...paragoombaCount){
+
+			init = paragoombaPosList.pop();
+			c1 = paragoombaPosList.pop();
+			c2 = paragoombaPosList.pop();
+			end = paragoombaPosList.pop();
+
+			paragoomba = new Paragoomba(init.x, init.y, simulationLayer, GameData.paragoombaCollisions, init, c1, c2, end);
+			GameData.paragoombas.add(paragoomba);
+			addChild(paragoomba);
+		}
 	}
 
 	private function playerPointsText() {
@@ -169,12 +188,12 @@ class GameState extends State {
         hudLayer.addChild(world);
 	}
 
-	private function powerUpText(){
-		powerUp = new Text(fontType);
-		powerUp.x = Screen.getWidth()*0.5;
-		powerUp.y = 30;
-        powerUp.text = "Power up!";
-        hudLayer.addChild(powerUp);
+	private function powerUpScreenText(){
+		powerUpText = new Text(fontType);
+		powerUpText.x = Screen.getWidth()*0.5;
+		powerUpText.y = 30;
+        powerUpText.text = "Power up!";
+        hudLayer.addChild(powerUpText);
 	}
 
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
@@ -187,10 +206,20 @@ class GameState extends State {
 		if(compareName(object, "flowerPosition")){
 			flower = new Flower(object.x, object.y, simulationLayer);
 			addChild(flower);
+			/*
+			powerUp = new Flower(object.x, object.y, simulationLayer, GameData.PWACollisions);
+			GameData.powerUps.add(powerUp);
+			addChild(powerUp);
+			*/
 		}else
 		if(compareName(object, "starPosition")){
 			star = new Star(object.x, object.y, simulationLayer);
 			addChild(star);
+			/*
+			powerUp = new Star(object.x, object.y, simulationLayer, GameData.PWACollisions);
+			GameData.powerUps.add(powerUp);
+			addChild(powerUp);
+			*/
 		}else
 		if(compareName(object, "winZone")){
 			winZone = new CollisionBox();
@@ -198,15 +227,6 @@ class GameState extends State {
 			winZone.y = object.y;
 			winZone.width = object.width;
 			winZone.height = object.height;
-		}
-
-		//Checkear
-		if(compareName(object, "winZone1")){
-				winZone1 = new CollisionBox();
-				winZone1.x = object.x;
-				winZone1.y = object.y;
-				winZone1.width = object.width;
-				winZone1.height = object.height;
 		}
 	}
 	
@@ -228,8 +248,9 @@ class GameState extends State {
 		gamepad.notify(chivito.onAxisChange, chivito.onButtonChange);
 	}
 
+	
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
-		if((!(star == null)) && (star.isActive())){
+		if((!(star == null)) && (star.isActive())){//if(chivito.isStarActivated()){
 			for(goomba in GameData.goombas){
 				if(!(goomba.isDead())){
 					goomba.damage();
@@ -248,16 +269,55 @@ class GameState extends State {
 		}
 	}
 
+	function chivitoVsParagoomba(playerC:ICollider, invaderC:ICollider) {
+		if((!(star == null)) && (star.isActive())){//if(chivito.isStarActivated()){
+			for(paragoomba in GameData.paragoombas){
+				if(!(paragoomba.isDead())){
+					paragoomba.damage();
+					paragoomba.die();
+					enemyCount++;
+					score.text = "Score: " + enemyCount;
+				}
+			}
+		}else{
+			for(paragoomba in GameData.paragoombas){
+				if(!(paragoomba.isDead())){
+					chivito.die();
+					changeState(new EndGame(false, 1));
+				}
+			}
+		}
+	}
+	
+
 	function flowerPowerUp(playerC:ICollider, invaderC:ICollider) {
-		powerUpText();
+		powerUpScreenText();
 		//TODO: Hacer que chivito empiece a disparar balas
 		flower.powerUpUsed();
 	}
 
 	function starPowerUp(playerC:ICollider, invaderC:ICollider) {
-		powerUpText();
+		powerUpScreenText();
 		star.activate();
 		star.powerUpUsed();
+	}
+
+	function activatePowerUps(playerC:ICollider, invaderC:ICollider) {
+		powerUpScreenText();
+
+		for(powerUp in GameData.powerUps){
+			if(powerUp.collision == invaderC){ //Esto nunca va a andar
+				if(powerUp.powerUpType == 'FLOWER'){
+					chivito.setFireMode();
+				}
+				if(powerUp.powerUpType == 'STAR'){
+					chivito.setStarChivito();
+				}
+				powerUp.activate();
+				powerUp.powerUpUsed();
+			}
+		}
+		
 	}
 
 	override function update(dt:Float) {
@@ -269,11 +329,19 @@ class GameState extends State {
 		
 		CollisionEngine.collide(GameData.goombaCollisions,worldMap.collision);
 
+		CollisionEngine.collide(GameData.paragoombaCollisions,worldMap.collision);
+
+		/*
+		for(powerUp in GameData.powerUps){
+			CollisionEngine.collide(powerUp.collision,worldMap.collision);
+		}
+		*/
+
 		if(!(flower == null)){
 			CollisionEngine.collide(flower.collision,worldMap.collision);
 		}
 
-		if(!(flower == null)){
+		if(!(star == null)){
 			CollisionEngine.collide(star.collision,worldMap.collision);
 		}
 		
@@ -290,6 +358,10 @@ class GameState extends State {
 		}
 		
 		CollisionEngine.overlap(chivito.collision, GameData.goombaCollisions, chivitoVsGoomba);
+
+		CollisionEngine.overlap(chivito.collision, GameData.paragoombaCollisions, chivitoVsParagoomba);
+		
+		//CollisionEngine.overlap(chivito.collision, GameData.PWACollisions, activatePowerUps);
 		
 		if(!(flower == null)){
 			CollisionEngine.overlap(chivito.collision, flower.collision, flowerPowerUp);

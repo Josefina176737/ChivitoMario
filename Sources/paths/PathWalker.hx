@@ -36,14 +36,14 @@ class PathWalker
 	{
 		time += dt*direction;
 		var s = time / totalTime;
-		if(s > 1){ //
+		if(s > 1){
 			time = totalTime;
 			if(playMode == PlayMode.None){
 				s = 1;
 			}else
 			if(playMode == PlayMode.Loop){
-				time = totalTime - time; //0
-				s = (s - 1); //0
+				time = totalTime - time;
+				s = (s - 1);
 			}else
 			if(playMode == PlayMode.Pong){
 				direction = -1;
@@ -57,9 +57,7 @@ class PathWalker
 				s = -s;
 			}
 		}
-		trace(s);
 		var currentPosition = path.getPos(s);
-		trace(currentPosition.x);
 		position.x = currentPosition.x;
 		position.y = currentPosition.y;
 	}

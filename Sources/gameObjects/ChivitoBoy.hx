@@ -11,6 +11,7 @@ import com.framework.utils.Entity;
 class ChivitoBoy extends Entity {
 	public var display:Sprite;
 	public var collision:CollisionBox;
+	private var starActivated:Bool;
 
 	var maxSpeed = 200;
 
@@ -116,6 +117,18 @@ class ChivitoBoy extends Entity {
 			}
 		}
 		
+	}
+
+	public function setFireMode(){
+		//TODO: Hacer que chivito empiece a disparar balas de fuego
+	}
+
+	public function setStarChivito(){
+		starActivated = true;
+	}
+
+	public function isStarActivated() {
+		return starActivated;
 	}
 
 	inline function isWallGrabing():Bool {

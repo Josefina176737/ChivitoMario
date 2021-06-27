@@ -17,4 +17,16 @@ class LevelPositions
 
 		return goombaPosList;
 	}
+
+	public static function getParagoombaPoints():List<FastVector2>
+		{
+			var paragoombaPosList:List<FastVector2> = new List<FastVector2>();
+			//1st paragoomba
+			paragoombaPosList.push(new FastVector2(1100, 590));
+			paragoombaPosList.push(new FastVector2(1000, 400));
+			paragoombaPosList.push(new FastVector2(800, 450));
+			paragoombaPosList.push(new FastVector2(600, 650));
+
+			return paragoombaPosList;
+		}
 }
