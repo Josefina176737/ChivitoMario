@@ -15,6 +15,7 @@ class ChivitoBoy extends Entity {
 	public var bulletImage:Sprite;
 	public var collision:CollisionBox;
 	private var starActivated:Bool;
+	private var fireModeActivated:Bool;
 	var facingDir:FastVector2 = new FastVector2(2, 1);
 
 	var maxSpeed = 200;
@@ -46,6 +47,8 @@ class ChivitoBoy extends Entity {
 		collision.maxVelocityX = 500;
 		collision.maxVelocityY = 800;
 		collision.dragX = 0.9;
+
+		fireModeActivated = false;
 	}
 
     function updateFacingDir() {      
@@ -62,8 +65,6 @@ class ChivitoBoy extends Entity {
         if(Input.i.isKeyCodeDown(KeyCode.Down)){
             facingDir.y += 1;
         }
-
-		//Puedo haber introducido un bug aca
     }
 
 	override function update(dt:Float) {
@@ -80,7 +81,7 @@ class ChivitoBoy extends Entity {
 
 		updateFacingDir();
 
-		if(Input.i.isKeyCodePressed(KeyCode.X)){
+		if((Input.i.isKeyCodePressed(KeyCode.X)) && fireModeActivated){
             var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions, bulletImage);
             addChild(bullet);
         }
@@ -151,7 +152,7 @@ class ChivitoBoy extends Entity {
 	}
 
 	public function setFireMode(){
-		//TODO: Hacer que chivito empiece a disparar balas de fuego
+		fireModeActivated = true;
 	}
 
 	public function setStarChivito(){

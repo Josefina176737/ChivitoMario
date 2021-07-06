@@ -1,6 +1,5 @@
 package states;
 
-import com.gEngine.display.Sprite;
 import gameObjects.Bullet;
 import gameObjects.Paragoomba;
 import gameObjects.PowerUp;
@@ -325,6 +324,7 @@ class GameState extends State {
 		powerUpScreenText();
 		//TODO: Hacer que chivito empiece a disparar balas
 		flower.powerUpUsed();
+		chivito.setFireMode();
 	}
 
 	function starPowerUp(playerC:ICollider, invaderC:ICollider) {
