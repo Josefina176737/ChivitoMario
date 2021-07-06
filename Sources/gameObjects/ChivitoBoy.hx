@@ -7,21 +7,28 @@ import com.gEngine.display.Layer;
 import com.collision.platformer.CollisionBox;
 import com.gEngine.display.Sprite;
 import com.framework.utils.Entity;
+import kha.input.KeyCode;
+import kha.math.FastVector2;
 
 class ChivitoBoy extends Entity {
 	public var display:Sprite;
+	public var bulletImage:Sprite;
 	public var collision:CollisionBox;
 	private var starActivated:Bool;
+	var facingDir:FastVector2 = new FastVector2(2, 1);
 
 	var maxSpeed = 200;
 
 	var lastWallGrabing:Float=0;
 	var sideTouching:Int;
+	var layerDisplay:Layer;
 
 	public function new(x:Float,y:Float,layer:Layer) {
 		super();
 		display = new Sprite("hero");
+		bulletImage = new Sprite("Bullet");
 		display.smooth = false;
+		this.layerDisplay = layer;
 		layer.addChild(display);
 		collision = new CollisionBox();
 		collision.width = display.width();
@@ -39,8 +46,25 @@ class ChivitoBoy extends Entity {
 		collision.maxVelocityX = 500;
 		collision.maxVelocityY = 800;
 		collision.dragX = 0.9;
-
 	}
+
+    function updateFacingDir() {      
+        if(Input.i.isKeyCodeDown(KeyCode.Left)){
+            facingDir.x += -1;
+        }
+        if(Input.i.isKeyCodeDown(KeyCode.Right)){
+            facingDir.x += 1;
+        }
+		if(Input.i.isKeyCodeDown(KeyCode.Up)){
+            facingDir.y += -1;
+        }
+
+        if(Input.i.isKeyCodeDown(KeyCode.Down)){
+            facingDir.y += 1;
+        }
+
+		//Puedo haber introducido un bug aca
+    }
 
 	override function update(dt:Float) {
 		if(isWallGrabing()){
@@ -53,8 +77,15 @@ class ChivitoBoy extends Entity {
 		}else{
 			lastWallGrabing+=dt;
 		}
+
+		updateFacingDir();
+
+		if(Input.i.isKeyCodePressed(KeyCode.X)){
+            var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions, bulletImage);
+            addChild(bullet);
+        }
+
 		super.update(dt);
-		
 		collision.update(dt);
 
 	}

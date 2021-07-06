@@ -1,5 +1,7 @@
 package states;
 
+import com.gEngine.display.Sprite;
+import gameObjects.Bullet;
 import gameObjects.Paragoomba;
 import gameObjects.PowerUp;
 import gameObjects.Star;
@@ -101,6 +103,7 @@ class GameState extends State {
 		atlas.add(new ImageLoader("star"));
 		atlas.add(new ImageLoader("background"));
         atlas.add(new ImageLoader("cannon"));
+		atlas.add(new ImageLoader("Bullet"));
         atlas.add(new SpriteSheetLoader("explosion_52x65_19f",51,64,0,[Sequence.at("ball",0,0),Sequence.at("explode",1,19)]));
         atlas.add(new SpriteSheetLoader("enemy_40x34_80f",40,34,0,[Sequence.at("walkSide",0,21),Sequence.at("walkUp",22,43),Sequence.at("walkDown",44,65),Sequence.at("death",66,79)]));
 		resources.add(atlas);
@@ -124,6 +127,8 @@ class GameState extends State {
 			 simulationLayer.addChild(mayonnaiseMap);
 		}, parseMapObjects);
 
+		GameData.map = worldMap;
+
 		playerPointsText();
 		worldText();
 
@@ -132,6 +137,7 @@ class GameState extends State {
 		createTouchJoystick();
 
 		GameData.simulationLayer=new Layer();
+		GameData.bulletCollisions=new CollisionGroup();
 
 		var init:FastVector2;
 		var end:FastVector2;
@@ -154,7 +160,7 @@ class GameState extends State {
 
 		GameData.paragoombaCollisions=new CollisionGroup();
 		var paragoombaPosList:List<FastVector2> = LevelPositions.getParagoombaPoints();
-		var paragoombaCount = Math.floor(paragoombaPosList.length/2);
+		var paragoombaCount = Math.floor(paragoombaPosList.length/4);
 
 		var c1:FastVector2;
 		var c2:FastVector2;
@@ -248,9 +254,34 @@ class GameState extends State {
 		gamepad.notify(chivito.onAxisChange, chivito.onButtonChange);
 	}
 
+	function bulletVSGoomba(bulletC:ICollider, invaderC:ICollider) {
+        var enemy:Goomba = cast invaderC.userData;
+        var bullet:Bullet = cast bulletC.userData;
+        
+		
+        if(!(bullet.isDead())){
+            enemy.die();
+            enemyCount++;
+			score.text = "Score: " + enemyCount;
+            bullet.die();
+        }
+		
+    }
+
+	function bulletVSParagoomba(bulletC:ICollider, invaderC:ICollider) {
+        var enemy:Paragoomba = cast invaderC.userData;
+        var bullet:Bullet = cast bulletC.userData;
+        
+        if(!(bullet.isDead())){
+            enemy.die();
+            enemyCount++;
+			score.text = "Score: " + enemyCount;
+            bullet.die();
+        }
+    }
 	
 	function chivitoVsGoomba(playerC:ICollider, invaderC:ICollider) {
-		if((!(star == null)) && (star.isActive())){//if(chivito.isStarActivated()){
+		if((!(star == null)) && (star.isActive())){
 			for(goomba in GameData.goombas){
 				if(!(goomba.isDead())){
 					goomba.damage();
@@ -270,7 +301,7 @@ class GameState extends State {
 	}
 
 	function chivitoVsParagoomba(playerC:ICollider, invaderC:ICollider) {
-		if((!(star == null)) && (star.isActive())){//if(chivito.isStarActivated()){
+		if((!(star == null)) && (star.isActive())){
 			for(paragoomba in GameData.paragoombas){
 				if(!(paragoomba.isDead())){
 					paragoomba.damage();
@@ -360,6 +391,10 @@ class GameState extends State {
 		CollisionEngine.overlap(chivito.collision, GameData.goombaCollisions, chivitoVsGoomba);
 
 		CollisionEngine.overlap(chivito.collision, GameData.paragoombaCollisions, chivitoVsParagoomba);
+
+		CollisionEngine.overlap(GameData.bulletCollisions, GameData.goombaCollisions, bulletVSGoomba);
+
+		CollisionEngine.overlap(GameData.bulletCollisions, GameData.paragoombaCollisions, bulletVSParagoomba);
 		
 		//CollisionEngine.overlap(chivito.collision, GameData.PWACollisions, activatePowerUps);
 		
