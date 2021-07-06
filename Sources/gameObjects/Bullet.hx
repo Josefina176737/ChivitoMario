@@ -18,7 +18,7 @@ class Bullet extends Entity {
     public function new(x:Float, y:Float, layer:Layer, dir:FastVector2, collisionGroup:CollisionGroup, bulletImage:Sprite) {
         super();
 
-        display = new Sprite("Bullet");
+        display = new Sprite("flower");
 		display.smooth = false;
 		layer.addChild(display);
 		collision = new CollisionBox();

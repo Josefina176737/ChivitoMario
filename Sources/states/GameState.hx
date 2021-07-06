@@ -100,8 +100,6 @@ class GameState extends State {
 			new Sequence("idle", [0, 1, 2, 3])
 		]));
 		atlas.add(new ImageLoader("star"));
-		atlas.add(new ImageLoader("background"));
-        atlas.add(new ImageLoader("cannon"));
 		atlas.add(new ImageLoader("Bullet"));
         atlas.add(new SpriteSheetLoader("explosion_52x65_19f",51,64,0,[Sequence.at("ball",0,0),Sequence.at("explode",1,19)]));
         atlas.add(new SpriteSheetLoader("enemy_40x34_80f",40,34,0,[Sequence.at("walkSide",0,21),Sequence.at("walkUp",22,43),Sequence.at("walkDown",44,65),Sequence.at("death",66,79)]));
@@ -333,6 +331,7 @@ class GameState extends State {
 		star.powerUpUsed();
 	}
 
+	/*
 	function activatePowerUps(playerC:ICollider, invaderC:ICollider) {
 		powerUpScreenText();
 
@@ -350,6 +349,7 @@ class GameState extends State {
 		}
 		
 	}
+	*/
 
 	override function update(dt:Float) {
 		super.update(dt);

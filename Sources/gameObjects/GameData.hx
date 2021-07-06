@@ -16,7 +16,7 @@ class GameData {
 	public static var goombas:List<Goomba> = new List();
 	public static var paragoombas:List<Paragoomba> = new List();
 	public static var powerUps:List<PowerUp> = new List();
-	public static var map:Tilemap; //Ver si esto hay que sacarlo
+	public static var map:Tilemap;
 
 	public static function clear():Void {
 		levelPath = null;
