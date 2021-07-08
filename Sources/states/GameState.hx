@@ -1,5 +1,6 @@
 package states;
 
+import com.loading.basicResources.SoundLoader;
 import gameObjects.Bullet;
 import gameObjects.Paragoomba;
 import gameObjects.PowerUp;
@@ -69,6 +70,11 @@ class GameState extends State {
 
 	override function load(resources:Resources) {
 		resources.add(new DataLoader(room));
+		resources.add(new SoundLoader("smb_mariodie", false));	
+		//resources.add(new SoundLoader("smb_jump-small"));
+		//resources.add(new SoundLoader("smb_powerup"));
+		//resources.add(new SoundLoader("smb_fireball"));	
+
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));

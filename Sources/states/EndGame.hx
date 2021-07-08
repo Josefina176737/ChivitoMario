@@ -1,5 +1,6 @@
 package states;
 
+import com.soundLib.SoundManager;
 import com.gEngine.helper.Screen;
 import kha.input.KeyCode;
 import com.framework.utils.Input;
@@ -41,6 +42,7 @@ class EndGame extends State {
 
 
         if(!winState){
+            //SoundManager.playMusic("smb_mariodie");
             text.text = "Y o u    l o s t !";
             textTotalPoints.text = "#Kill: " + enemyKillCount;
             textRestart.text = "P r e s s  s p a c e b a r  t o  r e s t a r t";
