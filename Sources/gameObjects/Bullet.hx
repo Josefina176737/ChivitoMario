@@ -15,10 +15,10 @@ class Bullet extends Entity {
     var speed:Float = 10;
     var time:Float = 0;
 
-    public function new(x:Float, y:Float, layer:Layer, dir:FastVector2, collisionGroup:CollisionGroup, bulletImage:Sprite) {
+    public function new(x:Float, y:Float, layer:Layer, dir:FastVector2, collisionGroup:CollisionGroup) {
         super();
 
-        display = new Sprite("flower");
+        display = new Sprite("Bullet");
 		display.smooth = false;
 		layer.addChild(display);
 		collision = new CollisionBox();

@@ -12,7 +12,6 @@ import kha.math.FastVector2;
 
 class ChivitoBoy extends Entity {
 	public var display:Sprite;
-	public var bulletImage:Sprite;
 	public var collision:CollisionBox;
 	private var starActivated:Bool;
 	private var fireModeActivated:Bool;
@@ -27,7 +26,6 @@ class ChivitoBoy extends Entity {
 	public function new(x:Float,y:Float,layer:Layer) {
 		super();
 		display = new Sprite("hero");
-		bulletImage = new Sprite("Bullet");
 		display.smooth = false;
 		this.layerDisplay = layer;
 		layer.addChild(display);
@@ -82,7 +80,7 @@ class ChivitoBoy extends Entity {
 		updateFacingDir();
 
 		if((Input.i.isKeyCodePressed(KeyCode.X)) && fireModeActivated){
-            var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions, bulletImage);
+            var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions);
             addChild(bullet);
         }
 
@@ -91,6 +89,7 @@ class ChivitoBoy extends Entity {
 
 	}
 	override function render() {
+		super.render();
 		var s = Math.abs(collision.velocityX / collision.maxVelocityX);
 		display.timeline.frameRate = (1 / 24) * s + (1 - s) * (1 / 10);
 		if (isWallGrabing()) {

@@ -70,7 +70,7 @@ class GameState extends State {
 
 	override function load(resources:Resources) {
 		resources.add(new DataLoader(room));
-		resources.add(new SoundLoader("smb_mariodie", false));	
+		//resources.add(new SoundLoader("smb_mariodie", false));	
 		//resources.add(new SoundLoader("smb_jump-small"));
 		//resources.add(new SoundLoader("smb_powerup"));
 		//resources.add(new SoundLoader("smb_fireball"));	
