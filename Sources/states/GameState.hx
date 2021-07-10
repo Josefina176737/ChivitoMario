@@ -69,12 +69,7 @@ class GameState extends State {
 	}
 
 	override function load(resources:Resources) {
-		resources.add(new DataLoader(room));
-		//resources.add(new SoundLoader("smb_mariodie", false));	
-		//resources.add(new SoundLoader("smb_jump-small"));
-		//resources.add(new SoundLoader("smb_powerup"));
-		//resources.add(new SoundLoader("smb_fireball"));	
-
+		resources.add(new DataLoader(room));	
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
@@ -107,8 +102,6 @@ class GameState extends State {
 		]));
 		atlas.add(new ImageLoader("star"));
 		atlas.add(new ImageLoader("Bullet"));
-        atlas.add(new SpriteSheetLoader("explosion_52x65_19f",51,64,0,[Sequence.at("ball",0,0),Sequence.at("explode",1,19)]));
-        atlas.add(new SpriteSheetLoader("enemy_40x34_80f",40,34,0,[Sequence.at("walkSide",0,21),Sequence.at("walkUp",22,43),Sequence.at("walkDown",44,65),Sequence.at("death",66,79)]));
 		resources.add(atlas);
 	}
 
@@ -297,7 +290,7 @@ class GameState extends State {
 			for(goomba in GameData.goombas){
 				if(!(goomba.isDead())){
 					chivito.die();
-					changeState(new EndGame(false, 1));
+					changeState(new EndGame(false, enemyCount));
 				}
 			}
 		}
@@ -317,7 +310,7 @@ class GameState extends State {
 			for(paragoomba in GameData.paragoombas){
 				if(!(paragoomba.isDead())){
 					chivito.die();
-					changeState(new EndGame(false, 1));
+					changeState(new EndGame(false, enemyCount));
 				}
 			}
 		}
@@ -326,7 +319,6 @@ class GameState extends State {
 
 	function flowerPowerUp(playerC:ICollider, invaderC:ICollider) {
 		powerUpScreenText();
-		//TODO: Hacer que chivito empiece a disparar balas
 		flower.powerUpUsed();
 		chivito.setFireMode();
 	}

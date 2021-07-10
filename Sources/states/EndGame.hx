@@ -1,5 +1,6 @@
 package states;
 
+import com.loading.basicResources.SoundLoader;
 import com.soundLib.SoundManager;
 import com.gEngine.helper.Screen;
 import kha.input.KeyCode;
@@ -25,6 +26,7 @@ class EndGame extends State {
         var atlas = new JoinAtlas(512, 512);
         atlas.add(new FontLoader(fontType,50));
         resources.add(atlas);
+        resources.add(new SoundLoader("smb_mariodie"));
     }
 
     override function init() {
@@ -42,7 +44,7 @@ class EndGame extends State {
 
 
         if(!winState){
-            //SoundManager.playMusic("smb_mariodie");
+            SM.playMusic("smb_mariodie", false);
             text.text = "Y o u    l o s t !";
             textTotalPoints.text = "#Kill: " + enemyKillCount;
             textRestart.text = "P r e s s  s p a c e b a r  t o  r e s t a r t";
