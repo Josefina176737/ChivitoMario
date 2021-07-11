@@ -1,5 +1,6 @@
 package states;
 
+import com.loading.basicResources.SoundLoader;
 import com.gEngine.display.Sprite;
 import com.loading.basicResources.ImageLoader;
 import com.gEngine.helper.Screen;
@@ -10,6 +11,7 @@ import com.loading.basicResources.JoinAtlas;
 import com.loading.basicResources.FontLoader;
 import com.loading.Resources;
 import com.framework.utils.State;
+import com.soundLib.SoundManager;
 
 class InitState extends State {
     var winState:Bool;
@@ -25,9 +27,11 @@ class InitState extends State {
         atlas.add(new FontLoader(fontType,70));
         atlas.add(new ImageLoader("TitleScreen"));
         resources.add(atlas);
+        resources.add(new SoundLoader("intro", false));
     }
 
     override function init() {
+        SM.playMusic("intro");
         var text = new Text(fontType);
         text.x = Screen.getWidth()*0.5+150;
         text.y = Screen.getHeight()*0.5-120;
