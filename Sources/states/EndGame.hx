@@ -27,6 +27,7 @@ class EndGame extends State {
         atlas.add(new FontLoader(fontType,50));
         resources.add(atlas);
         resources.add(new SoundLoader("smb_mariodie", false));
+        resources.add(new SoundLoader("jump"));
     }
 
     override function init() {
@@ -45,6 +46,7 @@ class EndGame extends State {
 
         if(!winState){
             SM.playMusic("smb_mariodie", false);
+            SM.muteSound();
             text.text = "Y o u    l o s t !";
             textTotalPoints.text = "#Kill: " + enemyKillCount;
             textRestart.text = "P r e s s  s p a c e b a r  t o  r e s t a r t";
@@ -58,6 +60,7 @@ class EndGame extends State {
     override function update(dt:Float) {
         super.update(dt);
         if(Input.i.isKeyCodePressed(KeyCode.Space)){
+            SM.unMuteSound();
             this.changeState(new GameState("screen_1_tmx",1,"tiles1",0));
         }
     }

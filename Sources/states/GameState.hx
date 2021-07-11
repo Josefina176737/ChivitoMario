@@ -77,6 +77,7 @@ class GameState extends State {
 		resources.add(new SoundLoader("level_clear"));
 		resources.add(new SoundLoader("stomp"));
 		resources.add(new SoundLoader("fireball"));
+		resources.add(new SoundLoader("jump"));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));

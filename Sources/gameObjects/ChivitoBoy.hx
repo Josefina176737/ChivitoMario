@@ -138,6 +138,7 @@ class ChivitoBoy extends Entity {
 		}
 		if (id == XboxJoystick.A) {
 			if (value == 1) {
+				SM.playFx("jump");
 				if (collision.isTouching(Sides.BOTTOM)) {
 					collision.velocityY = -1000;
 				} else if (isWallGrabing() || lastWallGrabing < 0.2) {
