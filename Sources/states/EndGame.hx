@@ -26,7 +26,7 @@ class EndGame extends State {
         var atlas = new JoinAtlas(512, 512);
         atlas.add(new FontLoader(fontType,50));
         resources.add(atlas);
-        resources.add(new SoundLoader("smb_mariodie"));
+        resources.add(new SoundLoader("smb_mariodie", false));
     }
 
     override function init() {

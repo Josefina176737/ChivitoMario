@@ -1,6 +1,7 @@
 package states;
 
 import com.loading.basicResources.SoundLoader;
+import com.soundLib.SoundManager;
 import gameObjects.Bullet;
 import gameObjects.Paragoomba;
 import gameObjects.PowerUp;
@@ -69,7 +70,9 @@ class GameState extends State {
 	}
 
 	override function load(resources:Resources) {
-		resources.add(new DataLoader(room));	
+		resources.add(new DataLoader(room));
+		resources.add(new SoundLoader("smb_powerup"));
+		resources.add(new SoundLoader("above_ground",false));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
@@ -106,6 +109,7 @@ class GameState extends State {
 	}
 
 	override function init() {
+		SM.playMusic("above_ground");
 		GameData.PWACollisions=new CollisionGroup();
 		stageColor(0.5, .5, 0.5);
 		simulationLayer = new Layer();
@@ -318,12 +322,14 @@ class GameState extends State {
 	
 
 	function flowerPowerUp(playerC:ICollider, invaderC:ICollider) {
+		SM.playFx("smb_powerup", false);
 		powerUpScreenText();
 		flower.powerUpUsed();
 		chivito.setFireMode();
 	}
 
 	function starPowerUp(playerC:ICollider, invaderC:ICollider) {
+		SM.playFx("smb_powerup", false);
 		powerUpScreenText();
 		star.activate();
 		star.powerUpUsed();
