@@ -74,6 +74,7 @@ class GameState extends State {
 		resources.add(new SoundLoader("smb_powerup"));
 		resources.add(new SoundLoader("above_ground",false));
 		resources.add(new SoundLoader("underground",false));
+		resources.add(new SoundLoader("level_clear"));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
@@ -387,6 +388,7 @@ class GameState extends State {
 		
 		if(CollisionEngine.overlap(chivito.collision, winZone)){
 			if(!(roomNbr == 3)){
+				SM.playFx("level_clear");
 				roomNbr++;
 				room = "screen_" + roomNbr + "_tmx";
 				tileSet = "tiles" + roomNbr;
