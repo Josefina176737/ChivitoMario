@@ -76,18 +76,11 @@ class GameState extends State {
 		resources.add(new SoundLoader("underground",false));
 		resources.add(new SoundLoader("level_clear"));
 		resources.add(new SoundLoader("stomp"));
+		resources.add(new SoundLoader("fireball"));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
 		atlas.add(new SpriteSheetLoader("hero", 45, 60, 0, [
-			new Sequence("fall", [0]),
-			new Sequence("slide", [0]),
-			new Sequence("jump", [1]),
-			new Sequence("run", [2, 3, 4, 5, 6, 7, 8, 9]),
-			new Sequence("idle", [10]),
-			new Sequence("wallGrab", [11])
-		]));
-		atlas.add(new SpriteSheetLoader("hero_red", 45, 60, 0, [
 			new Sequence("fall", [0]),
 			new Sequence("slide", [0]),
 			new Sequence("jump", [1]),
@@ -212,7 +205,7 @@ class GameState extends State {
 	function parseMapObjects(layerTilemap:Tilemap, object:TmxObject) {
 		if(compareName(object, "playerPosition")){
 			if(chivito == null){
-				chivito = new ChivitoBoy(object.x, object.y, simulationLayer);
+				chivito = new ChivitoBoy(object.x, object.y, simulationLayer, resources);
 				addChild(chivito);
 			}
 		}else

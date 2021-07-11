@@ -1,6 +1,7 @@
 package states;
 
 import com.loading.basicResources.SoundLoader;
+import com.soundLib.SoundManager;
 import com.gEngine.display.Sprite;
 import com.loading.basicResources.ImageLoader;
 import com.gEngine.helper.Screen;
@@ -11,7 +12,6 @@ import com.loading.basicResources.JoinAtlas;
 import com.loading.basicResources.FontLoader;
 import com.loading.Resources;
 import com.framework.utils.State;
-import com.soundLib.SoundManager;
 
 class InitState extends State {
     var winState:Bool;

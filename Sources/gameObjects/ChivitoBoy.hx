@@ -1,5 +1,7 @@
 package gameObjects;
 
+import com.soundLib.SoundManager;
+import com.loading.Resources;
 import com.framework.utils.Input;
 import com.collision.platformer.Sides;
 import com.framework.utils.XboxJoystick;
@@ -23,7 +25,7 @@ class ChivitoBoy extends Entity {
 	var sideTouching:Int;
 	var layerDisplay:Layer;
 
-	public function new(x:Float,y:Float,layer:Layer) {
+	public function new(x:Float,y:Float,layer:Layer,resources:Resources) {
 		super();
 		display = new Sprite("hero");
 		display.smooth = false;
@@ -80,7 +82,8 @@ class ChivitoBoy extends Entity {
 		updateFacingDir();
 
 		if((Input.i.isKeyCodePressed(KeyCode.X)) && fireModeActivated){
-            var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions);
+            SM.playFx("fireball");
+			var bullet:Bullet = new Bullet(collision.x, collision.y, layerDisplay, facingDir, GameData.bulletCollisions);
             addChild(bullet);
         }
 
