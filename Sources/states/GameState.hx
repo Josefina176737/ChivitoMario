@@ -73,6 +73,7 @@ class GameState extends State {
 		resources.add(new DataLoader(room));
 		resources.add(new SoundLoader("smb_powerup"));
 		resources.add(new SoundLoader("above_ground",false));
+		resources.add(new SoundLoader("underground",false));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
@@ -109,7 +110,11 @@ class GameState extends State {
 	}
 
 	override function init() {
-		SM.playMusic("above_ground");
+		if(roomNbr == 2){
+			SM.playMusic("underground");
+		}else{
+			SM.playMusic("above_ground");
+		}
 		GameData.PWACollisions=new CollisionGroup();
 		stageColor(0.5, .5, 0.5);
 		simulationLayer = new Layer();
