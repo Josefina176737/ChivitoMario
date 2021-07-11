@@ -75,6 +75,7 @@ class GameState extends State {
 		resources.add(new SoundLoader("above_ground",false));
 		resources.add(new SoundLoader("underground",false));
 		resources.add(new SoundLoader("level_clear"));
+		resources.add(new SoundLoader("stomp"));
 		var atlas = new JoinAtlas(2048, 2048);
 		atlas.add(new FontLoader(fontType,50));
 		atlas.add(new TilesheetLoader(tileSet, 32, 32, 0));
@@ -266,6 +267,7 @@ class GameState extends State {
         
 		
         if(!(bullet.isDead())){
+			SM.playFx("stomp");
             enemy.die();
             enemyCount++;
 			score.text = "Score: " + enemyCount;
@@ -279,6 +281,7 @@ class GameState extends State {
         var bullet:Bullet = cast bulletC.userData;
         
         if(!(bullet.isDead())){
+			SM.playFx("stomp");
             enemy.die();
             enemyCount++;
 			score.text = "Score: " + enemyCount;
@@ -290,6 +293,7 @@ class GameState extends State {
 		if((!(star == null)) && (star.isActive())){
 			for(goomba in GameData.goombas){
 				if(!(goomba.isDead())){
+					SM.playFx("stomp");
 					goomba.damage();
 					goomba.die();
 					enemyCount++;
@@ -310,6 +314,7 @@ class GameState extends State {
 		if((!(star == null)) && (star.isActive())){
 			for(paragoomba in GameData.paragoombas){
 				if(!(paragoomba.isDead())){
+					SM.playFx("stomp");
 					paragoomba.damage();
 					paragoomba.die();
 					enemyCount++;
