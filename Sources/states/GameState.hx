@@ -101,7 +101,7 @@ class GameState extends State {
 			new Sequence("idle", [0, 1, 2, 3])
 		]));
 		atlas.add(new ImageLoader("star"));
-		atlas.add(new ImageLoader("Bullet"));
+		atlas.add(new ImageLoader("bullet"));
 		resources.add(atlas);
 	}
 
