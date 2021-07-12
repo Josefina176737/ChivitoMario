@@ -24,7 +24,7 @@ class EndGame extends State {
 
     override function load(resources:Resources) {
         var atlas = new JoinAtlas(512, 512);
-        atlas.add(new FontLoader(fontType,50));
+        atlas.add(new FontLoader(fontType,60));
         resources.add(atlas);
         resources.add(new SoundLoader("smb_mariodie", false));
         resources.add(new SoundLoader("jump"));
@@ -32,15 +32,15 @@ class EndGame extends State {
 
     override function init() {
         var text = new Text(fontType);
-        text.x = Screen.getWidth()*0.5-250;
+        text.x = Screen.getWidth()*0.5-100;
         text.y = Screen.getHeight()*0.5-200;
 
         var textTotalPoints = new Text(fontType);
-        textTotalPoints.x = Screen.getWidth()*0.5-250;
+        textTotalPoints.x = Screen.getWidth()*0.5-80;
         textTotalPoints.y = Screen.getHeight()*0.5-100;
 
         var textRestart = new Text(fontType);
-        textRestart.x = Screen.getWidth()*0.5-350;
+        textRestart.x = Screen.getWidth()*0.5-240;
         textRestart.y = Screen.getHeight()*0.5+180;
 
 
