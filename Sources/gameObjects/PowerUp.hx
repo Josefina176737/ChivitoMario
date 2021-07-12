@@ -1,9 +1,7 @@
 package gameObjects;
 
-import com.collision.platformer.CollisionGroup;
 import com.framework.utils.Entity;
 import com.gEngine.display.Sprite;
-import com.gEngine.display.Layer;
 import com.collision.platformer.CollisionBox;
 
 class PowerUp extends Entity

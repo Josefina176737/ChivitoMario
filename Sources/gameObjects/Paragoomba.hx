@@ -2,7 +2,6 @@ package gameObjects;
 
 import paths.Bezier;
 import com.gEngine.display.Layer;
-import paths.Linear;
 import com.collision.platformer.CollisionGroup;
 import kha.math.FastVector2;
 import com.collision.platformer.CollisionBox;

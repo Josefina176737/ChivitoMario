@@ -1,6 +1,5 @@
 package paths;
 
-import haxe.iterators.RestIterator;
 import kha.math.FastVector2;
 
 class Bezier implements Path {

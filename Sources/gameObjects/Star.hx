@@ -1,6 +1,5 @@
 package gameObjects;
 
-import com.loading.basicResources.ImageLoader;
 import com.framework.utils.Entity;
 import com.gEngine.display.Sprite;
 import com.gEngine.display.Layer;

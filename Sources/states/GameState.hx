@@ -4,7 +4,6 @@ import com.loading.basicResources.SoundLoader;
 import com.soundLib.SoundManager;
 import gameObjects.Bullet;
 import gameObjects.Paragoomba;
-import gameObjects.PowerUp;
 import gameObjects.Star;
 import com.gEngine.display.StaticLayer;
 import gameObjects.Flower;
@@ -36,6 +35,7 @@ import com.loading.basicResources.JoinAtlas;
 import com.loading.Resources;
 import com.framework.utils.State;
 import kha.math.FastVector2;
+//import gameObjects.PowerUp;
 
 class GameState extends State {
 	var worldMap:Tilemap;
