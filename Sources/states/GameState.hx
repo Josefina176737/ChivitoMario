@@ -93,7 +93,7 @@ class GameState extends State {
 			new Sequence("walk", [0, 1]),
 			new Sequence("death", [2])
 		]));
-		atlas.add(new SpriteSheetLoader("paragoomba", 47, 32, 0, [
+		atlas.add(new SpriteSheetLoader("paragoomba", 46, 32, 0, [
 			new Sequence("walk", [0, 1]),
 			new Sequence("death", [2])
 		]));
@@ -262,6 +262,7 @@ class GameState extends State {
 		
         if(!(bullet.isDead())){
 			SM.playFx("stomp");
+			enemy.damage();
             enemy.die();
             enemyCount++;
 			score.text = "Score: " + enemyCount;
@@ -276,6 +277,7 @@ class GameState extends State {
         
         if(!(bullet.isDead())){
 			SM.playFx("stomp");
+			enemy.damage();
             enemy.die();
             enemyCount++;
 			score.text = "Score: " + enemyCount;
