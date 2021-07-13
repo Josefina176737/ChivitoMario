@@ -28,6 +28,7 @@ class InitState extends State {
         atlas.add(new ImageLoader("TitleScreen"));
         resources.add(atlas);
         resources.add(new SoundLoader("intro", false));
+        resources.add(new SoundLoader("jump"));
     }
 
     override function init() {
@@ -46,6 +47,7 @@ class InitState extends State {
         
         text.text = "... like";
         textRestart.text = "Press spacebar to start";
+        SM.muteSound();
         
         stage.addChild(image);
         stage.addChild(text);
@@ -55,6 +57,7 @@ class InitState extends State {
     override function update(dt:Float) {
         super.update(dt);
         if(Input.i.isKeyCodePressed(KeyCode.Space)){
+            SM.unMuteSound();
             this.changeState(new GameState("screen_1_tmx",1,"tiles1", 0));
         }
     }
